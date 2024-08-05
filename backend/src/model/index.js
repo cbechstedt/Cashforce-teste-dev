@@ -3,12 +3,25 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sequelize from '../database/config.js';
 import { Sequelize } from 'sequelize';
+import mysql from 'mysql2/promise';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const basename = path.basename(__filename);
 const db = {};
+
+// Função para criar o banco de dados se não existir
+const createDatabase = async () => {
+  const connection = await mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+  });
+
+  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.DB_DATABASE}\`;`);
+  await connection.end();
+};
 
 // Função para importar modelos
 const importModels = async () => {
@@ -40,6 +53,7 @@ const associateModels = () => {
 // Inicializar o banco de dados
 const initializeDatabase = async () => {
   try {
+    await createDatabase();
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
 
