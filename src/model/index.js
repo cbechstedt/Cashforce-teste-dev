@@ -11,25 +11,34 @@ const __dirname = path.dirname(__filename);
 const basename = path.basename(__filename);
 const db = {};
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
+// Função para importar modelos
+const importModels = async () => {
+  const modelFiles = fs.readdirSync(__dirname)
+    .filter(file => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js');
+
+  const modelPromises = modelFiles.map(async file => {
+    const { default: Model } = await import(path.join(__dirname, file));
+    const modelInstance = new Model(sequelize, Sequelize.DataTypes);
+    return { name: modelInstance.name, model: modelInstance };
   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+  const models = await Promise.all(modelPromises);
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+  models.forEach(({ name, model }) => {
+    db[name] = model;
+  });
+};
 
+// Associar modelos
+const associateModels = () => {
+  Object.keys(db).forEach(modelName => {
+    if (db[modelName].associate) {
+      db[modelName].associate(db);
+    }
+  });
+};
+
+// Inicializar o banco de dados
 const initializeDatabase = async () => {
   try {
     await sequelize.authenticate();
@@ -43,6 +52,12 @@ const initializeDatabase = async () => {
     const queries = readQueries();
     const queriesArray = queries.split(';').filter(query => query.trim() !== '');
 
+    // Importar modelos
+    await importModels();
+
+    // Associar modelos
+    associateModels();
+
     // Sincronizar modelos com o banco de dados
     await sequelize.sync({ alter: true });
 
@@ -51,7 +66,7 @@ const initializeDatabase = async () => {
     // // Executar cada consulta individualmente
     // for (const query of queriesArray) {
     //   if (query.trim() !== '') {
-    //     await sequelize.query(query, { raw: true });
+    //     sequelize.query(query, { raw: true });
     //   }
     // }
 
