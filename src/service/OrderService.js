@@ -13,7 +13,6 @@ class OrderService {
       ]
     });
 
-    // Formatar os dados conforme necessário
     return orders.map(order => ({
       notaFiscal: order.nNf,
       sacado: order.buyer.name,

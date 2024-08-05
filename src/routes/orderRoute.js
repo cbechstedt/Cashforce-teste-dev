@@ -3,6 +3,6 @@ import OrderController from '../controller/OrderController.js';
 
 const router = express.Router();
 
-router.get('/', OrderController.getAllOrders);
+router.get('/orders', OrderController.getAllOrders);
 
 export default router;

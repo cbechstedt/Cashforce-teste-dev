@@ -3,7 +3,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import sequelize from '../database/config.js';
 import { Sequelize } from 'sequelize';
-import { readQueries } from '../database/queryUtils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,14 +43,6 @@ const initializeDatabase = async () => {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
 
-    // Criar e usar o banco de dados
-    await sequelize.query('CREATE DATABASE IF NOT EXISTS cashforce_v3;', { raw: true });
-    await sequelize.query('USE cashforce_v3;', { raw: true });
-
-    // Ler e separar o script SQL
-    const queries = readQueries();
-    const queriesArray = queries.split(';').filter(query => query.trim() !== '');
-
     // Importar modelos
     await importModels();
 
@@ -60,15 +51,7 @@ const initializeDatabase = async () => {
 
     // Sincronizar modelos com o banco de dados
     await sequelize.sync({ alter: true });
-
     console.log('Database synchronized successfully.');
-
-    // // Executar cada consulta individualmente
-    // for (const query of queriesArray) {
-    //   if (query.trim() !== '') {
-    //     sequelize.query(query, { raw: true });
-    //   }
-    // }
 
     console.log('Database setup completed.');
   } catch (error) {
