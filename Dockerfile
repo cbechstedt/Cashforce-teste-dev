@@ -2,7 +2,7 @@ FROM node:16-alpine3.11
 
 WORKDIR /app
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm install
 
@@ -10,5 +10,5 @@ COPY . .
 
 EXPOSE 3000
 
-ENTRYPOINT [ "npm", "run" ]
-CMD [ "start" ]
+ENTRYPOINT ["npm", "run"]
+CMD ["start"]
