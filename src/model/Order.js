@@ -1,5 +1,8 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../database/config.js';
+import Buyer from './Buyer.js';
+import Provider from './Provider.js';
+import Cnpj from './Cnpj.js';
 
 const Order = sequelize.define('Order', {
   id: {
@@ -34,12 +37,8 @@ const Order = sequelize.define('Order', {
   timestamps: true,
 });
 
-Order.associate = (models) => {
-  Order.belongsTo(models.Cnpj, { foreignKey: 'cnpjId', as: 'cnpj' });
-  Order.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-  Order.belongsTo(models.Buyer, { foreignKey: 'buyerId', as: 'buyer' });
-  Order.belongsTo(models.Provider, { foreignKey: 'providerId', as: 'provider' });
-  Order.hasMany(models.OrderPortion, { foreignKey: 'orderId', as: 'orderPortions' });
-};
+Order.belongsTo(Cnpj, { foreignKey: 'cnpjId', as: 'cnpj' });
+Order.belongsTo(Buyer, { foreignKey: 'buyerId', as: 'buyer' });
+Order.belongsTo(Provider, { foreignKey: 'providerId', as: 'provider' });
 
 export default Order;

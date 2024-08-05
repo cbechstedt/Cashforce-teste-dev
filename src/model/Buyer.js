@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../database/config.js';
+import Cnpj from './Cnpj.js';
 
 const Buyer = sequelize.define('Buyer', {
   id: {
@@ -36,8 +37,7 @@ const Buyer = sequelize.define('Buyer', {
   timestamps: true,
 });
 
-Buyer.associate = (models) => {
-  Buyer.belongsTo(models.Cnpj, { foreignKey: 'cnpjId', as: 'cnpj' });
-};
+Buyer.belongsTo(Cnpj, { foreignKey: 'cnpjId', as: 'cnpj' });
+
 
 export default Buyer;

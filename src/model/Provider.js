@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../database/config.js';
+import Cnpj from './Cnpj.js';
 
 const Provider = sequelize.define('Provider', {
   id: {
@@ -39,8 +40,7 @@ const Provider = sequelize.define('Provider', {
   timestamps: true,
 });
 
-Provider.associate = (models) => {
-  Provider.belongsTo(models.Cnpj, { foreignKey: 'cnpjId', as: 'cnpj' });
-};
+Provider.belongsTo(Cnpj, { foreignKey: 'cnpjId', as: 'cnpj' });
+
 
 export default Provider;
