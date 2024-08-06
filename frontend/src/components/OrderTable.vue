@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="order in orders" :key="order.notaFiscal">
+      <tr class="row-table" v-for="order in orders" :key="order.notaFiscal">
         <td>{{ order.notaFiscal }}</td>
         <td>{{ order.sacado }}</td>
         <td>{{ order.cedente }}</td>
@@ -71,16 +71,25 @@ th, td {
   text-align: left;
 }
 
+tbody {
+  border: 1px solid #CAD3FF;
+}
+
 th {
-  background-color: #f2f2f2;
+  color: #A1A8B8;
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
 }
 
 .value {
-  color: green;
+  color: #00AD8C;
 }
 
 .status-confirmed {
-  color: green;
+  color: #00AD8C;
 }
 
 .status-pending {
@@ -90,9 +99,12 @@ th {
 .cedente-button {
   padding: 5px 10px;
   cursor: pointer;
-  border: 1px solid blue;
-  border-radius: 5px;
+  border: 1px solid #CAD3FF;
+  border-radius: 24px;
   background-color: white;
-  color: blue;
+  color: #727D94;
+  width: 165px;
+  height: 32px;
 }
+
 </style>
