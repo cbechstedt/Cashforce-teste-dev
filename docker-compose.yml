@@ -1,6 +1,6 @@
 services:
   api:
-    build: .
+    build: ./backend
     container_name: chashforce_api
     ports:
       - 3000:3000
@@ -34,6 +34,16 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
+
+  frontend:
+    build: ./frontend
+    container_name: chashforce_frontend
+    ports:
+      - "8080:8080"
+    volumes:
+    - ./frontend:/app
+    networks:
+      - cashforce_network
 
 networks:
   cashforce_network:
