@@ -69,7 +69,35 @@ table {
 th, td {
   padding: 8px;
   text-align: left;
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #4D5566;
 }
+
+/* SACADO 001 */
+
+position: absolute;
+width: 86px;
+height: 18px;
+left: 201px;
+top: 15px;
+
+/* p14 - Medium 500 */
+font-family: 'DM Sans';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 18px;
+display: flex;
+align-items: center;
+
+/* N. Dark / 3 */
+color: #4D5566;
+
+
 
 tbody {
   border: 1px solid #CAD3FF;
